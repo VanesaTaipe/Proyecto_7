@@ -15,6 +15,7 @@
 
 ## 🎯 Descripción
 Cliente HTTP modular y extensible que implementa patrones de diseño Builder y Adapter, con soporte para middleware y manejo de errores robusto. Desarrollado con ES Modules y tested al 100%.
+Este cliente HTTP modular y extensible fue desarrollado para proporcionar una solución flexible y robusta para realizar peticiones HTTP, implementando patrones de diseño modernos y un sistema de middleware extensible.
 
 ### Características Principales
 - ✅ Métodos HTTP: GET, POST, PUT, DELETE
@@ -53,9 +54,29 @@ tests/
 ```
 
 ### Componentes Principales
-1. **HttpClient**: Core del sistema
-2. **HttpClientBuilder**: Constructor fluido
+1. **HttpClient**: Core del sistema:
+   
+```
+  export class HttpClient {
+    constructor(baseUrl, adapter = null) {
+        this.baseUrl = baseUrl;
+        this.adapter = adapter || new FetchAdapter(baseUrl);
+        this.middlewares = [];
+    }
+```
+
+2. **HttpClientBuilder**: Constructor fluido:
+
+```
+export class HttpClientBuilder {
+    constructor() {
+        this.baseUrl = '';
+        this.middlewares = [];
+    }
+   ```
 3. **Adapters**: Implementaciones HTTP
+   
+   * BUilder y Adapter
 4. **Middleware**: Sistema de interceptores
 
 ## 💻 Uso Básico
@@ -140,7 +161,7 @@ class HttpClientBuilder {
 ```
 
 ## 🔄 Middleware System
-- **Orden de Ejecución**: FIFO (First In, First Out)
+
 - **Cadena de Responsabilidad**: Cada middleware puede:
   - Modificar la request
   - Modificar la response
@@ -149,17 +170,31 @@ class HttpClientBuilder {
 
 ### Built-in Middleware
 1. **loggingMiddleware**:
+El loggingMiddleware es un interceptor que registra información sobre las peticiones HTTP y sus respuestas, proporcionando visibilidad sobre el flujo de comunicación.
+* Registrar peticiones y respuestas HTTP
+* Facilitar el debugging
+* Monitorear tiempos de respuesta
+* Tracking de errores
    ```
    import { loggingMiddleware } from './middleware';
    ```
 
 2. **authMiddleware**:
+El authMiddleware es un interceptor que maneja la autenticación de las peticiones HTTP, agregando automáticamente los headers de autorización necesarios.
+* Manejar tokens de autenticación
+* Agregar headers de autorización
+* Centralizar la lógica de autenticación
+* Mantener la seguridad de las peticiones
    ```
    import { authMiddleware } from './middleware';
    ```
 
 ## 📐 Patrones de Diseño
 ### 1. Builder Pattern
+* Permite la construcción paso a paso del cliente HTTP
+* Proporciona una interfaz fluida para la configuración
+*Separa la construcción de la representación
+
 ```
 const client = new HttpClientBuilder()
     .setBaseUrl('https://api.example.com')
@@ -168,8 +203,18 @@ const client = new HttpClientBuilder()
 ```
 
 ### 2. Adapter Pattern
+Permite cambiar la implementación HTTP subyacente
+Facilita el testing mediante mocks
+Proporciona una interfaz consistente
+
 ```
-class CustomAdapter extends HttpAdapter {
+class HttpAdapter {
+    async request(config) {
+        throw new Error('Método no implementado');
+    }
+}
+
+class FetchAdapter extends HttpAdapter {
     async request(config) {
     }
 }

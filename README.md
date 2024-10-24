@@ -41,6 +41,15 @@ src/
 ├── errors/           # Manejo de errores
 ├── middleware/       # Sistema de middleware
 └── index.js         # Punto de entrada
+examples/
+|___advanced-usage.js
+|___basic-usage.js
+
+tests/
+|___adapters
+|___client
+|___errors
+|___middleware
 ```
 
 ### Componentes Principales
@@ -50,23 +59,9 @@ src/
 4. **Middleware**: Sistema de interceptores
 
 ## 💻 Uso Básico
+En este caso podemos ejecutar el `basic-usage.js` para ver como funciona todo el codigo es una pequeña simulación.
 ```
-import { HttpClientBuilder } from './src/client';
-import { loggingMiddleware } from './src/middleware';
-
-const client = new HttpClientBuilder()
-    .setBaseUrl('https://api.example.com')
-    .addMiddleware(loggingMiddleware)
-    .build();
-
-// GET Request
-const data = await client.get('/users');
-
-// POST Request
-const user = await client.post('/users', {
-    name: 'John Doe',
-    email: 'john@example.com'
-});
+node basic-usage.js
 ```
 
 ## 🔧 Ejemplos Avanzados
@@ -180,13 +175,4 @@ class CustomAdapter extends HttpAdapter {
 }
 ```
 
-### 3. Middleware Pattern
-```
-const timeMiddleware = next => async (url, config) => {
-    const start = Date.now();
-    const response = await next(url, config);
-    console.log(`Time: ${Date.now() - start}ms`);
-    return response;
-};
-```
 

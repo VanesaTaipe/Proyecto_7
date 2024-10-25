@@ -199,7 +199,7 @@ El authMiddleware es un interceptor que maneja la autenticación de las peticion
 const client = new HttpClientBuilder()
     .setBaseUrl('https://api.example.com')
     .addMiddleware(loggingMiddleware)
-    .build();
+    .build()
 ```
 
 ### 2. Adapter Pattern

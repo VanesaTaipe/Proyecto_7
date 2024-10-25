@@ -9,7 +9,7 @@ describe('AuthMiddleware', () => {
             ok: true,
             json: () => Promise.resolve({})
         });
-        // Mock console methods
+       
         console.error = jest.fn();
         console.log = jest.fn();
     });
